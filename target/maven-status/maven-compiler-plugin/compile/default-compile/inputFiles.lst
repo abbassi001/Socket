@@ -1,5 +1,15 @@
+/home/abbassy/L3_s2/reseau/TP5__maven/adam.tacko/src/main/java/reseau/view/GameView.java
+/home/abbassy/L3_s2/reseau/TP5__maven/adam.tacko/src/main/java/reseau/model/NetworkManager.java
+/home/abbassy/L3_s2/reseau/TP5__maven/adam.tacko/src/main/java/reseau/view/theme/Theme.java
 /home/abbassy/L3_s2/reseau/TP5__maven/adam.tacko/src/main/java/module-info.java
-/home/abbassy/L3_s2/reseau/TP5__maven/adam.tacko/src/main/java/reseau/MorpionLauncher.java
 /home/abbassy/L3_s2/reseau/TP5__maven/adam.tacko/src/main/java/reseau/MorpionServer.java
+/home/abbassy/L3_s2/reseau/TP5__maven/adam.tacko/src/main/java/reseau/model/GameState.java
 /home/abbassy/L3_s2/reseau/TP5__maven/adam.tacko/src/main/java/reseau/SystemInfo.java
+/home/abbassy/L3_s2/reseau/TP5__maven/adam.tacko/src/main/java/reseau/controller/WelcomeController.java
+/home/abbassy/L3_s2/reseau/TP5__maven/adam.tacko/src/main/java/reseau/model/ThemeManager.java
+/home/abbassy/L3_s2/reseau/TP5__maven/adam.tacko/src/main/java/reseau/controller/GameController.java
+/home/abbassy/L3_s2/reseau/TP5__maven/adam.tacko/src/main/java/reseau/view/theme/ThemeFactory.java
+/home/abbassy/L3_s2/reseau/TP5__maven/adam.tacko/src/main/java/reseau/MorpionLauncher.java
+/home/abbassy/L3_s2/reseau/TP5__maven/adam.tacko/src/main/java/reseau/model/GameModel.java
+/home/abbassy/L3_s2/reseau/TP5__maven/adam.tacko/src/main/java/reseau/controller/SettingsController.java
 /home/abbassy/L3_s2/reseau/TP5__maven/adam.tacko/src/main/java/reseau/MorpionClientFX.java

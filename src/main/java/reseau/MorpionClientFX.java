@@ -9,7 +9,18 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
+import java.util.Arrays;
+import java.util.Random;
 
+import javafx.animation.Animation;
+import javafx.animation.FadeTransition;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.ParallelTransition;
+import javafx.animation.RotateTransition;
+import javafx.animation.ScaleTransition;
+import javafx.animation.Timeline;
+import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -28,12 +39,19 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+
 
 public class MorpionClientFX extends Application {
     // Debug flag to enable detailed logging
@@ -238,6 +256,139 @@ public class MorpionClientFX extends Application {
         dialogStage.showAndWait();
     }
     
+
+    private void animateWinningLine(int startRow, int startCol, int endRow, int endCol, GridPane gameBoard) {
+    // Créer une ligne animée entre les cases gagnantes
+    Line winLine = new Line();
+    winLine.setStartX(cells[startRow][startCol].getLayoutX() + 50);
+    winLine.setStartY(cells[startRow][startCol].getLayoutY() + 50);
+    winLine.setEndX(cells[endRow][endCol].getLayoutX() + 50);
+    winLine.setEndY(cells[endRow][endCol].getLayoutY() + 50);
+    winLine.setStrokeWidth(5);
+    winLine.setStroke(Color.web("#fcc419"));
+    winLine.setStrokeLineCap(StrokeLineCap.ROUND);
+    
+    // Animation pour dessiner la ligne
+    winLine.setStroke((Paint) Arrays.asList(15.0, 15.0));
+    winLine.setStrokeDashOffset(0);
+    
+    Timeline timeline;
+        timeline = new Timeline(
+                new KeyFrame(javafx.util.Duration.ZERO, new KeyValue(winLine.strokeDashOffsetProperty(), 30)),
+                new KeyFrame(javafx.util.Duration.seconds(1), new KeyValue(winLine.strokeDashOffsetProperty(), 0))
+        );
+    
+    timeline.setCycleCount(Animation.INDEFINITE);
+    timeline.play();
+    
+    // Ajouter la ligne à la grille
+    // Vous devrez adapter ceci à votre structure d'interface spécifique
+    gameBoard.getChildren().add(winLine);
+}
+
+private void showVictoryAnimation(BorderPane root) {
+    // Animation de victoire avec des confettis ou des particules
+    Random rand = new Random();
+    
+    for (int i = 0; i < 50; i++) {
+        Rectangle confetti = new Rectangle(10, 10);
+        confetti.setFill(Color.web(
+            String.format("#%02x%02x%02x", 
+                rand.nextInt(256), 
+                rand.nextInt(256), 
+                rand.nextInt(256))
+        ));
+        confetti.setX(rand.nextDouble() * 400);
+        confetti.setY(-20);
+        confetti.setRotate(rand.nextDouble() * 360);
+        
+        root.getChildren().add(confetti);
+        
+        // Animation de chute
+        TranslateTransition fall = new TranslateTransition(javafx.util.Duration.seconds(1 + rand.nextDouble() * 2), confetti);
+        fall.setToY(500);
+        fall.setOnFinished(e -> root.getChildren().remove(confetti));
+        
+        // Animation de rotation
+        RotateTransition rotate = new RotateTransition(javafx.util.Duration.seconds(1 + rand.nextDouble()), confetti);
+        rotate.setByAngle(360);
+        rotate.setCycleCount(Animation.INDEFINITE);
+        
+        ParallelTransition pt = new ParallelTransition(confetti, fall, rotate);
+        pt.play();
+    }
+}
+
+private void showTitleScreen(Stage primaryStage) {
+    StackPane titleRoot = new StackPane();
+    titleRoot.setStyle("-fx-background-color: linear-gradient(to bottom right, #4dabf7, #228be6);");
+    
+    VBox content = new VBox(30);
+    content.setAlignment(Pos.CENTER);
+    content.setPadding(new Insets(40));
+    
+    // Logo ou titre
+    Label titleLabel = new Label("Morpion");
+    titleLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 60));
+    titleLabel.setTextFill(Color.WHITE);
+    titleLabel.setStyle("-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 3);");
+    
+    // Animation de pulsation pour le titre
+    ScaleTransition pulse = new ScaleTransition(Duration.seconds(1.5), titleLabel);
+    pulse.setFromX(1.0);
+    pulse.setFromY(1.0);
+    pulse.setToX(1.05);
+    pulse.setToY(1.05);
+    pulse.setCycleCount(Animation.INDEFINITE);
+    pulse.setAutoReverse(true);
+    pulse.play();
+    
+    // Bouton de démarrage élégant
+    Button startButton = new Button("Jouer");
+    startButton.setPrefWidth(200);
+    startButton.setPrefHeight(60);
+    startButton.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
+    startButton.setStyle("-fx-background-color: white; " +
+                         "-fx-text-fill: #228be6; " +
+                         "-fx-background-radius: 30; " +
+                         "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 3);");
+    
+    // Effet de survol
+    startButton.setOnMouseEntered(e -> 
+        startButton.setStyle("-fx-background-color: #f1f3f5; " +
+                             "-fx-text-fill: #1971c2; " +
+                             "-fx-background-radius: 30; " +
+                             "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 12, 0, 0, 4);")
+    );
+    
+    startButton.setOnMouseExited(e -> 
+        startButton.setStyle("-fx-background-color: white; " +
+                             "-fx-text-fill: #228be6; " +
+                             "-fx-background-radius: 30; " +
+                             "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 3);")
+    );
+    
+    startButton.setOnAction(e -> showModeSelectionDialog(primaryStage));
+    
+    // Animation d'apparition pour le bouton
+    FadeTransition fadeIn = new FadeTransition(Duration.seconds(1), startButton);
+    fadeIn.setFromValue(0);
+    fadeIn.setToValue(1);
+    fadeIn.setDelay(Duration.seconds(0.5));
+    
+    // Ajouter les éléments
+    content.getChildren().addAll(titleLabel, startButton);
+    titleRoot.getChildren().add(content);
+    
+    // Créer et montrer la scène
+    Scene titleScene = new Scene(titleRoot, 600, 400);
+    primaryStage.setScene(titleScene);
+    primaryStage.setTitle("Morpion - Jeu Élégant");
+    primaryStage.show();
+    
+    // Jouer les animations
+    fadeIn.play();
+}
     private void initializeMainUI(Stage primaryStage) {
         BorderPane root = new BorderPane();
         root.setPadding(new Insets(10));
@@ -1097,6 +1248,34 @@ public class MorpionClientFX extends Application {
             System.out.println();
         }
     }
+    // Dans la méthode handleSinglePlayerMode ou updateUIFromBoardState
+private void updateSymbolStyle(Button cell, char symbol) {
+    if (symbol == 'X') {
+        cell.setText("X");
+        cell.setStyle("-fx-background-color: white; " +
+                      "-fx-background-radius: 10; " +
+                      "-fx-border-radius: 10; " +
+                      "-fx-border-color: #4dabf7; " +
+                      "-fx-border-width: 2px; " +
+                      "-fx-text-fill: #228be6; " +
+                      "-fx-font-family: 'Verdana'; " +
+                      "-fx-font-weight: bold; " +
+                      "-fx-font-size: 40px; " +
+                      "-fx-effect: dropshadow(three-pass-box, rgba(66,139,202,0.3), 10, 0, 0, 0);");
+    } else if (symbol == 'O') {
+        cell.setText("O");
+        cell.setStyle("-fx-background-color: white; " +
+                      "-fx-background-radius: 10; " +
+                      "-fx-border-radius: 10; " +
+                      "-fx-border-color: #f783ac; " +
+                      "-fx-border-width: 2px; " +
+                      "-fx-text-fill: #e64980; " +
+                      "-fx-font-family: 'Verdana'; " +
+                      "-fx-font-weight: bold; " +
+                      "-fx-font-size: 40px; " +
+                      "-fx-effect: dropshadow(three-pass-box, rgba(230,73,128,0.3), 10, 0, 0, 0);");
+    }
+}
 
     public static void main(String[] args) {
         launch(args);

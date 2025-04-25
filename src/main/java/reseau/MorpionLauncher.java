@@ -1,8 +1,12 @@
 package reseau;
 
+import javafx.application.Application;
+import javafx.stage.Stage;
+import reseau.view.GameView;
+
 /**
- * Point d'entrée simplifié pour le jeu de Morpion.
- * Cette classe détecte les arguments et lance soit le serveur, soit le client.
+ * Point d'entrée principal pour le jeu de Morpion.
+ * Cette classe détecte les arguments et lance soit le client, soit le serveur.
  */
 public class MorpionLauncher {
 
@@ -33,8 +37,11 @@ public class MorpionLauncher {
         } else {
             System.out.println("🎮 Lancement du client Morpion...");
             
+            // Stocker les arguments du client pour les récupérer plus tard
+            GameView.setCommandLineArgs(args);
+            
             // Lancer le client JavaFX
-            MorpionClientFX.main(args);
+            Application.launch(GameView.class, args);
         }
     }
 }

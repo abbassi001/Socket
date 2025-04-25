@@ -1,0 +1,247 @@
+/* Thème Classique pour le jeu de Morpion */
+
+/* Variables globales */
+* {
+    -fx-primary-color: #228be6;         /* Bleu pour X et boutons */
+    -fx-secondary-color: #e64980;       /* Rose pour O */
+    -fx-background-color: #f8f9fa;      /* Arrière-plan clair */
+    -fx-border-color: #dee2e6;          /* Couleur de bordure */
+    -fx-accent-color: #fcc419;          /* Couleur d'accent - jaune doré */
+    -fx-text-color: #212529;            /* Couleur de texte principale */
+    -fx-font-family: "System";          /* Police par défaut */
+}
+
+/* Styles généraux */
+.root {
+    -fx-background-color: -fx-background-color;
+    -fx-text-fill: -fx-text-color;
+    -fx-font-family: -fx-font-family;
+}
+
+/* Conteneur d'accueil */
+.welcome-container {
+    -fx-background-color: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+    -fx-background-radius: 20;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);
+}
+
+/* Titre */
+.title-text {
+    -fx-fill: -fx-text-color;
+    -fx-font-family: "Verdana";
+    -fx-font-weight: bold;
+    -fx-font-size: 48px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 4, 0, 0, 2);
+}
+
+/* Symboles X et O */
+.symbol-x {
+    -fx-fill: -fx-primary-color;
+    -fx-font-weight: bold;
+    -fx-font-size: 64px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 3, 0, 0, 1);
+}
+
+.symbol-o {
+    -fx-fill: -fx-secondary-color;
+    -fx-font-weight: bold;
+    -fx-font-size: 64px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 3, 0, 0, 1);
+}
+
+/* Bouton d'accueil */
+.welcome-button {
+    -fx-background-color: -fx-primary-color;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-min-width: 200px;
+    -fx-min-height: 50px;
+    -fx-background-radius: 25;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 8, 0, 0, 2);
+}
+
+.welcome-button:hover {
+    -fx-background-color: derive(-fx-primary-color, -10%);
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 3);
+    -fx-cursor: hand;
+}
+
+.welcome-button:pressed {
+    -fx-background-color: derive(-fx-primary-color, -20%);
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 1);
+}
+
+/* Boutons primaires et secondaires */
+.primary-button {
+    -fx-background-color: -fx-primary-color;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-min-width: 120px;
+    -fx-min-height: 40px;
+    -fx-background-radius: 20;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 1);
+}
+
+.primary-button:hover {
+    -fx-background-color: derive(-fx-primary-color, -10%);
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 6, 0, 0, 2);
+    -fx-cursor: hand;
+}
+
+.secondary-button {
+    -fx-background-color: -fx-border-color;
+    -fx-text-fill: -fx-text-color;
+    -fx-min-width: 120px;
+    -fx-min-height: 40px;
+    -fx-background-radius: 20;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 3, 0, 0, 1);
+}
+
+.secondary-button:hover {
+    -fx-background-color: derive(-fx-border-color, -10%);
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 4, 0, 0, 1);
+    -fx-cursor: hand;
+}
+
+/* Section des titres */
+.section-title {
+    -fx-text-fill: -fx-text-color;
+    -fx-font-weight: bold;
+    -fx-font-size: 18px;
+}
+
+/* Configuration du serveur */
+.server-config {
+    -fx-background-color: rgba(222, 226, 230, 0.3);
+    -fx-background-radius: 10;
+    -fx-border-color: rgba(222, 226, 230, 0.8);
+    -fx-border-radius: 10;
+    -fx-border-width: 1px;
+}
+
+/* Radio buttons */
+.radio-button {
+    -fx-text-fill: -fx-text-color;
+}
+
+.radio-button .radio {
+    -fx-border-color: -fx-primary-color;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-border-width: 1px;
+}
+
+.radio-button:selected .radio .dot {
+    -fx-background-color: -fx-primary-color;
+}
+
+/* Text fields */
+.text-field {
+    -fx-background-color: white;
+    -fx-background-radius: 5;
+    -fx-border-color: -fx-border-color;
+    -fx-border-radius: 5;
+    -fx-border-width: 1px;
+}
+
+.text-field:focused {
+    -fx-border-color: -fx-primary-color;
+    -fx-background-color: white;
+}
+
+/* Cellules du jeu */
+.game-board {
+    -fx-background-color: linear-gradient(to bottom right, derive(-fx-background-color, 5%), derive(-fx-background-color, -5%));
+    -fx-background-radius: 15;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 5);
+    -fx-padding: 15;
+    -fx-hgap: 8;
+    -fx-vgap: 8;
+}
+
+.game-cell {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: -fx-border-color;
+    -fx-border-width: 2px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2);
+    -fx-min-width: 100px;
+    -fx-min-height: 100px;
+    -fx-font-family: "Verdana";
+    -fx-font-weight: bold;
+    -fx-font-size: 40px;
+}
+
+.cell-hover {
+    -fx-background-color: #f8f9fa;
+    -fx-border-color: #6c757d;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 8, 0, 0, 3);
+    -fx-cursor: hand;
+}
+
+.cell-x {
+    -fx-text-fill: -fx-primary-color;
+    -fx-border-color: derive(-fx-primary-color, 20%);
+}
+
+.cell-o {
+    -fx-text-fill: -fx-secondary-color;
+    -fx-border-color: derive(-fx-secondary-color, 20%);
+}
+
+/* Barre d'état */
+.status-bar {
+    -fx-background-color: rgba(248, 249, 250, 0.8);
+    -fx-background-radius: 10;
+    -fx-border-color: -fx-border-color;
+    -fx-border-radius: 10;
+    -fx-border-width: 1px;
+    -fx-padding: 8;
+}
+
+/* Styles pour les étiquettes d'état */
+.status-label {
+    -fx-padding: 5;
+    -fx-text-fill: -fx-text-color;
+    -fx-font-size: 14px;
+}
+
+.turn-indicator {
+    -fx-background-color: #e0ffe0;
+    -fx-padding: 5;
+    -fx-background-radius: 5;
+    -fx-font-weight: bold;
+}
+
+.wait-indicator {
+    -fx-background-color: #fff0f0;
+    -fx-padding: 5;
+    -fx-background-radius: 5;
+}
+
+/* Scores */
+.score-label {
+    -fx-text-fill: -fx-text-color;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
+/* Barre de menu */
+.menu-bar {
+    -fx-background-color: derive(-fx-background-color, -2%);
+    -fx-border-color: -fx-border-color;
+    -fx-border-width: 0 0 1 0;
+}
+
+.menu .label {
+    -fx-text-fill: -fx-text-color;
+}
+
+.menu-item:focused, .menu:showing {
+    -fx-background-color: -fx-primary-color;
+}
+
+.menu-item:focused .label, .menu:showing .label {
+    -fx-text-fill: white;
+}

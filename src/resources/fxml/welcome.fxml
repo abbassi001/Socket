@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<StackPane stylesheets="@../css/classic.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="reseau.controller.WelcomeController">
+   <children>
+      <VBox alignment="CENTER" spacing="30.0" styleClass="welcome-container">
+         <padding>
+            <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+         </padding>
+         <children>
+            <!-- Titre du jeu -->
+            <Text fx:id="titleText" styleClass="title-text" text="MORPION">
+               <font>
+                  <Font name="System Bold" size="48.0" />
+               </font>
+            </Text>
+            
+            <!-- Symboles X et O -->
+            <HBox alignment="CENTER" spacing="30.0">
+               <children>
+                  <Text fx:id="xSymbol" styleClass="symbol-x" text="X">
+                     <font>
+                        <Font name="System Bold" size="64.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="oSymbol" styleClass="symbol-o" text="O">
+                     <font>
+                        <Font name="System Bold" size="64.0" />
+                     </font>
+                  </Text>
+               </children>
+            </HBox>
+            
+            <!-- Boutons principaux -->
+            <VBox fx:id="buttonsContainer" alignment="CENTER" spacing="15.0">
+               <children>
+                  <Button fx:id="playButton" mnemonicParsing="false" onAction="#handlePlayButton" styleClass="welcome-button" text="Jouer">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="settingsButton" mnemonicParsing="false" onAction="#handleSettingsButton" styleClass="welcome-button" text="Options">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="quitButton" mnemonicParsing="false" onAction="#handleQuitButton" styleClass="welcome-button" text="Quitter">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Button>
+               </children>
+            </VBox>
+            
+            <!-- Container pour la sélection de mode (initialement masqué) -->
+            <VBox fx:id="modeSelectionContainer" alignment="CENTER" spacing="20.0" visible="false" managed="false">
+               <children>
+                  <Label styleClass="section-title" text="Mode de jeu">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  
+                  <fx:define>
+                     <ToggleGroup fx:id="modeGroup" />
+                  </fx:define>
+                  
+                  <RadioButton fx:id="soloModeRadio" mnemonicParsing="false" selected="true" text="Jouer contre l'ordinateur" toggleGroup="$modeGroup">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </RadioButton>
+                  
+                  <RadioButton fx:id="multiplayerModeRadio" mnemonicParsing="false" text="Jouer contre un autre joueur" toggleGroup="$modeGroup">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </RadioButton>
+                  
+                  <Separator />
+                  
+                  <!-- Configuration du serveur (visible uniquement en mode multijoueur) -->
+                  <VBox fx:id="serverConfigContainer" alignment="CENTER" spacing="10.0" styleClass="server-config">
+                     <children>
+                        <Label styleClass="section-title" text="Configuration du serveur">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Label>
+                        
+                        <fx:define>
+                           <ToggleGroup fx:id="serverGroup" />
+                        </fx:define>
+                        
+                        <RadioButton fx:id="localHostRadio" mnemonicParsing="false" selected="true" text="Localhost (même machine)" toggleGroup="$serverGroup">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </RadioButton>
+                        
+                        <RadioButton fx:id="remoteServerRadio" mnemonicParsing="false" text="Serveur sur le réseau" toggleGroup="$serverGroup">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </RadioButton>
+                        
+                        <HBox alignment="CENTER" spacing="10.0">
+                           <children>
+                              <Label text="Adresse IP:">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="serverAddressField" prefWidth="150.0" promptText="ex: 192.168.1.100" />
+                           </children>
+                        </HBox>
+                        
+                        <HBox alignment="CENTER" spacing="10.0">
+                           <children>
+                              <Label text="Port:">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="portField" prefWidth="80.0" promptText="ex: 55555" text="55555" />
+                           </children>
+                        </HBox>
+                     </children>
+                     
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </VBox>
+                  
+                  <HBox alignment="CENTER" spacing="20.0">
+                     <children>
+                        <Button fx:id="backButton" mnemonicParsing="false" onAction="#handleBackButton" styleClass="secondary-button" text="Retour">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="startButton" mnemonicParsing="false" onAction="#handleStartButton" styleClass="primary-button" text="Commencer">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+   </children>
+</StackPane>
