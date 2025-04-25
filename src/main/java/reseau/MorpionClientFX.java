@@ -18,6 +18,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
@@ -860,44 +863,125 @@ public class MorpionClientFX extends Application {
         statusLabel.setText(message);
     }
 
+    // private void showGameResult(String result) {
+    //     String title = "Fin de la partie";
+    //     String headerText;
+    
+    //     if (result.contains("gagné")) {
+    //         headerText = "🏆 Victoire !";
+    //     } else if (result.contains("perdu") || result.contains("serveur a gagné")) {
+    //         headerText = "😢 Défaite";
+    //     } else {
+    //         headerText = "🤝 Match nul";
+    //     }
+    
+    //     Alert alert = new Alert(AlertType.CONFIRMATION);
+    //     alert.setTitle(title);
+    //     alert.setHeaderText(headerText);
+    //     alert.setContentText(result + "\n\nVoulez-vous rejouer ?");
+    
+    //     alert.getButtonTypes().setAll(javafx.scene.control.ButtonType.YES, javafx.scene.control.ButtonType.NO);
+    
+    //     alert.showAndWait().ifPresent(response -> {
+    //         if (response == javafx.scene.control.ButtonType.YES) {
+    //             // Send replay request to the server
+    //             if (connectionActive && output != null) {
+    //                 output.println("REPLAY");
+    //                 resetBoard();
+    //                 updateStatus("En attente d'une nouvelle partie...");
+    //                 gameOver = false;
+    //             }
+    //         } else {
+    //             // Send quit notification
+    //             if (connectionActive && output != null) {
+    //                 output.println("QUIT");
+    //             }
+    //             disconnect();
+    //         }
+    //     });
+    // }
+    
+
     private void showGameResult(String result) {
-        String title = "Fin de la partie";
-        String headerText;
+    String title = "Fin de la partie";
+    String headerText;
+    String contentText;
+    String cssStyle = "";
     
-        if (result.contains("gagné")) {
-            headerText = "🏆 Victoire !";
-        } else if (result.contains("perdu") || result.contains("serveur a gagné")) {
-            headerText = "😢 Défaite";
-        } else {
-            headerText = "🤝 Match nul";
-        }
-    
-        Alert alert = new Alert(AlertType.CONFIRMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(headerText);
-        alert.setContentText(result + "\n\nVoulez-vous rejouer ?");
-    
-        alert.getButtonTypes().setAll(javafx.scene.control.ButtonType.YES, javafx.scene.control.ButtonType.NO);
-    
-        alert.showAndWait().ifPresent(response -> {
-            if (response == javafx.scene.control.ButtonType.YES) {
-                // Send replay request to the server
-                if (connectionActive && output != null) {
-                    output.println("REPLAY");
-                    resetBoard();
-                    updateStatus("En attente d'une nouvelle partie...");
-                    gameOver = false;
-                }
-            } else {
-                // Send quit notification
-                if (connectionActive && output != null) {
-                    output.println("QUIT");
-                }
-                disconnect();
-            }
-        });
+    // Déterminer le type de résultat (victoire, défaite ou match nul)
+    if (result.contains("gagné")) {
+        headerText = "🎉 VICTOIRE ! 🏆";
+        contentText = "Félicitations, vous avez remporté la partie !";
+        cssStyle = "-fx-background-color: #e0ffe0;"; // Fond vert clair pour victoire
+    } else if (result.contains("perdu") || result.contains("serveur a gagné")) {
+        headerText = "😢 DÉFAITE";
+        contentText = "Vous avez perdu la partie. Plus de chance la prochaine fois !";
+        cssStyle = "-fx-background-color: #ffe0e0;"; // Fond rouge clair pour défaite
+    } else {
+        headerText = "🤝 MATCH NUL";
+        contentText = "La partie s'est terminée par un match nul !";
+        cssStyle = "-fx-background-color: #f0f0f0;"; // Fond gris clair pour match nul
     }
     
+    // Créer une boîte de dialogue personnalisée
+    Alert alert = new Alert(AlertType.CONFIRMATION);
+    alert.setTitle(title);
+    alert.setHeaderText(headerText);
+    alert.setContentText(contentText + "\n\nVoulez-vous rejouer ?");
+    
+    // Style
+    DialogPane dialogPane = alert.getDialogPane();
+    dialogPane.setStyle(cssStyle);
+    dialogPane.setPrefWidth(400);
+    
+    // Personnaliser les boutons
+    ButtonType rejouerBtnType = new ButtonType("Rejouer", ButtonBar.ButtonData.YES);
+    ButtonType quitterBtnType = new ButtonType("Quitter", ButtonBar.ButtonData.NO);
+    alert.getButtonTypes().setAll(rejouerBtnType, quitterBtnType);
+    
+    // Ajouter une image ou un emoji dans un Label pour l'effet visuel
+    VBox content = new VBox(20);
+    Label emojiLabel = new Label();
+    emojiLabel.setFont(Font.font("System", FontWeight.BOLD, 48));
+    
+    if (result.contains("gagné")) {
+        emojiLabel.setText("🏆");
+    } else if (result.contains("perdu")) {
+        emojiLabel.setText("😢");
+    } else {
+        emojiLabel.setText("🤝");
+    }
+    
+    content.setAlignment(Pos.CENTER);
+    content.getChildren().add(emojiLabel);
+    
+    // Personnaliser la présentation
+    Label messageLabel = new Label(contentText);
+    messageLabel.setWrapText(true);
+    messageLabel.setFont(Font.font("System", FontWeight.NORMAL, 14));
+    content.getChildren().add(messageLabel);
+    
+    // Ajouter le contenu personnalisé
+    dialogPane.setContent(content);
+    
+    alert.showAndWait().ifPresent(response -> {
+        if (response == rejouerBtnType) {
+            // Envoyer une demande de replay au serveur
+            if (connectionActive && output != null) {
+                output.println("REPLAY");
+                resetBoard();
+                updateStatus("En attente d'une nouvelle partie...");
+                gameOver = false;
+            }
+        } else {
+            // Envoyer une notification de quit
+            if (connectionActive && output != null) {
+                output.println("QUIT");
+            }
+            disconnect();
+        }
+    });
+}
     private void showReplayButton() {
         Platform.runLater(() -> {
             replayButton.setVisible(true);
