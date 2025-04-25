@@ -1,4 +1,6 @@
+reseau/MorpionServer$Game.class
 reseau/MorpionClientFX.class
 reseau/SystemInfo.class
 reseau/MorpionServer.class
 module-info.class
+reseau/MorpionServer$PlayerHandler.class
